@@ -12,6 +12,7 @@ import com.devsuperior.dscatalog.dto.CategoryDTO;
 import com.devsuperior.dscatalog.dto.ProductDTO;
 import com.devsuperior.dscatalog.entities.Category;
 import com.devsuperior.dscatalog.entities.Product;
+import com.devsuperior.dscatalog.repositories.CategoryRepository;
 import com.devsuperior.dscatalog.repositories.ProductRepository;
 import com.devsuperior.dscatalog.services.exceptions.DatabaseException;
 import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
@@ -23,6 +24,9 @@ public class ProductService {
 
 	@Autowired
 	private ProductRepository repository;
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
 	
 	@Transactional(readOnly = true)
 	public Page<ProductDTO> findAll(Pageable pageable) {
@@ -50,7 +54,7 @@ public class ProductService {
 			Product entity = repository.getReferenceById(id);
 			copyDtoToEntity(dto, entity);
 			entity = repository.save(entity);
-			return new ProductDTO(entity);
+			return new ProductDTO(entity, entity.getCategories());
 		}
 		catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Resource not found");
@@ -78,7 +82,8 @@ public class ProductService {
 		
 		entity.getCategories().clear();
 		for (CategoryDTO cat : dto.getCategories()) {
-			entity.getCategories().add(new Category(cat.getId(), cat.getName()));
+			Category category = categoryRepository.getReferenceById(cat.getId());
+			entity.getCategories().add(category);
 		}
 	}
 }
