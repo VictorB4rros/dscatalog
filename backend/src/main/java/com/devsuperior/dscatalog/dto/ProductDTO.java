@@ -1,5 +1,6 @@
 package com.devsuperior.dscatalog.dto;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,18 +14,20 @@ public class ProductDTO {
 	private String description;
 	private Double price;
 	private String imgUrl;
+	private Instant date;
 	
 	private Set<CategoryDTO> categories = new HashSet<>();
 	
 	public ProductDTO() {
 	}
 
-	public ProductDTO(Long id, String name, String description, Double price, String imgUrl) {
+	public ProductDTO(Long id, String name, String description, Double price, String imgUrl, Instant date) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.price = price;
 		this.imgUrl = imgUrl;
+		this.date = date;
 	}
 	
 	public ProductDTO(Product entity) {
@@ -33,6 +36,7 @@ public class ProductDTO {
 		description = entity.getDescription();
 		price = entity.getPrice();
 		imgUrl = entity.getImgUrl();
+		this.date = entity.getDate();
 	}
 	
 	public ProductDTO(Product entity, Set<Category> categories) {
@@ -58,6 +62,14 @@ public class ProductDTO {
 
 	public String getImgUrl() {
 		return imgUrl;
+	}
+	
+	public Instant getDate() {
+		return date;
+	}
+
+	public void setDate(Instant date) {
+		this.date = date;
 	}
 
 	public Set<CategoryDTO> getCategories() {
