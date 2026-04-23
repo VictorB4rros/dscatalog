@@ -1,5 +1,6 @@
 package com.devsuperior.dscatalog.services;
 
+import com.devsuperior.dscatalog.projections.ProductProjection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,9 @@ import com.devsuperior.dscatalog.services.exceptions.DatabaseException;
 import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -86,5 +90,16 @@ public class ProductService {
 			Category category = categoryRepository.getReferenceById(cat.getId());
 			entity.getCategories().add(category);
 		}
+	}
+
+	@Transactional(readOnly = true)
+	public Page<ProductProjection> findAllPaged(String name, String categoryId, Pageable pageable) {
+		List<Long> categoryIds = Arrays.asList();
+		if (!"0".equals(categoryId)) {
+			String[] vet = categoryId.split(",");
+			List<String> list = Arrays.asList(vet);
+			categoryIds = list.stream().map(Long::parseLong).toList();
+		}
+		return repository.searchProducts(categoryIds, name, pageable);
 	}
 }
