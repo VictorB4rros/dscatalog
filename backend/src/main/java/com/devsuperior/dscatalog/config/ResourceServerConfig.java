@@ -48,8 +48,8 @@ public class ResourceServerConfig {
 		http.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers(HttpMethod.GET, "/products/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
+				.requestMatchers(HttpMethod.POST, "/users/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN")
-				.requestMatchers(HttpMethod.POST, "/users/**").hasRole("ADMIN")
 				.requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
 				.requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
 				.anyRequest().authenticated());
