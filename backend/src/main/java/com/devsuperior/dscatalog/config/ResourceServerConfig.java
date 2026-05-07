@@ -51,7 +51,7 @@ public class ResourceServerConfig {
 				.requestMatchers(HttpMethod.POST, "/auth/recover-token").permitAll()
 				.requestMatchers(HttpMethod.PUT, "/auth/new-password").permitAll()
 				.requestMatchers(HttpMethod.POST, "/users/**").permitAll()
-				.requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.GET, "/users/").hasRole("ADMIN")
 				.requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
 				.requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
 				.anyRequest().authenticated());
